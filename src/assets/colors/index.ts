@@ -12,6 +12,8 @@ export const Colors = {
     appOrange:'#E1AA1D',
     rejectedColor: '#E76C6C',
     countButtonColor: '#00525A',
+    textBoxColor: '#8B8B8B10',
+    otpBoxBorderColor: '#0FBF6B',
 
 
 
@@ -21,6 +23,7 @@ export const Colors = {
     /* -------------------------------------------------------------------------- */
     white: '#ffffff',
     black: '#000000',
+    borderColor: '#00000020',
     transparent: '#00000000',
 
 } 

@@ -12,7 +12,9 @@ function App(): React.JSX.Element {
 
   return (
     <SafeAreaView style={styles.container}>
-       <StatusBar  barStyle="light-content" />
+
+
+      <StatusBar barStyle="light-content" />
       <StackNavigationContainer />
     </SafeAreaView>
   );

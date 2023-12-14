@@ -20,8 +20,8 @@ const StackNavigationContainer = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ ...screenOptions }}>
-         <Stack.Screen name="splash" component={Splash} />
-         <Stack.Screen name="login" component={Login} />
+         <Stack.Screen name="Splash" component={Splash} />
+         <Stack.Screen name="Login" component={Login} />
 
       </Stack.Navigator>
     </NavigationContainer>
