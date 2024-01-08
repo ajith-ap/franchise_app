@@ -14,6 +14,8 @@ export const Colors = {
     countButtonColor: '#00525A',
     textBoxColor: '#8B8B8B10',
     otpBoxBorderColor: '#0FBF6B',
+    dropDownTextColor: '#2E2E2E',
+    statusGreen:'#0DBA67',
 
 
 
@@ -25,5 +27,6 @@ export const Colors = {
     black: '#000000',
     borderColor: '#00000020',
     transparent: '#00000000',
+    infoContaienrColor:'#B4CAA430' // figma -- B4CAA420
 
 } 

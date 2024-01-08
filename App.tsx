@@ -5,8 +5,8 @@ import {
   SafeAreaView, StatusBar, StyleSheet,
 } from 'react-native';
 
-import StackNavigationContainer from './src/navigations/StackNavigation';
 import { Colors } from './src/assets/colors';
+import StackNavigationContainer from './src/navigations/StackNavigation';
 
 function App(): React.JSX.Element {
 

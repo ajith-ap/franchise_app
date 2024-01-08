@@ -38,5 +38,6 @@ export const UpdateFoodIcon = require('../images/update_food.png');
 export const VendorIcon = require('../images/vendor.png');
 export const ViewBusinessIcon = require('../images/view_business.png');
 export const WarningIcon = require('../images/warning.png');
+export const LocationIcon = require('../images/location_icon.png');
 
 /* -------------------------------------------------------------------------- */
