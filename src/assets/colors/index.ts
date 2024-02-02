@@ -16,6 +16,7 @@ export const Colors = {
     otpBoxBorderColor: '#0FBF6B',
     dropDownTextColor: '#2E2E2E',
     statusGreen:'#0DBA67',
+    lightGrey:'#F1F1F1',
 
 
 

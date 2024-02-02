@@ -36,7 +36,7 @@ const menuList = [
     title: 'View Business',
     icon: ViewBusinessIcon,
     color: '#FE781705',
-    screen:''
+    screen:'ViewBusiness'
   },
   {
     id: 4,
@@ -50,7 +50,7 @@ const menuList = [
     title: 'Update App',
     icon: UpdateAppIcon,
     color: '#98D5F705',
-    screen:''
+    screen:'UpdatePage'
   },
   {
     id: 2,
