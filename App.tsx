@@ -12,6 +12,7 @@ function App(): React.JSX.Element {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor={Colors.white} />
 
 
       <StatusBar barStyle="light-content" />
@@ -22,7 +23,8 @@ function App(): React.JSX.Element {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor:Colors.white
   },
 
 });
