@@ -11,6 +11,11 @@ import DailyBusiness from '../screens/daily_business';
 import CustomDateRange from '../screens/custom_date_range';
 import CustomDateVendor from '../screens/custom_date_vendor';
 import UpdatePage from '../screens/update_page';
+import StopOrder from '../screens/stop_order';
+import Settings from '../screens/settings';
+import ScanMachine from '../screens/scan_machine';
+import Support from '../screens/support';
+import TAndC from '../screens/t&c/Index';
 
 const Stack = createStackNavigator();
 
@@ -28,9 +33,9 @@ const StackNavigationContainer = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ ...screenOptions }}>
-         {/* <Stack.Screen name="Splash" component={Splash} />
-         <Stack.Screen name="Login" component={Login} /> */}
-         {/* <Stack.Screen name="SetLocation" component={SetLocation} /> */}
+         <Stack.Screen name="Splash" component={Splash} />
+         <Stack.Screen name="Login" component={Login} />
+         <Stack.Screen name="SetLocation" component={SetLocation} />
          <Stack.Screen name="Home" component={Home} />
          <Stack.Screen name="UpdateFood" component={UpdateFood} />
          <Stack.Screen name="ViewBusiness" component={ViewBusiness} />
@@ -38,6 +43,11 @@ const StackNavigationContainer = () => {
          <Stack.Screen name="CustomDateRange" component={CustomDateRange} />
          <Stack.Screen name="CustomDateVendor" component={CustomDateVendor} />
          <Stack.Screen name="UpdatePage" component={UpdatePage} />
+         <Stack.Screen name="StopOrder" component={StopOrder} />
+         <Stack.Screen name="Settings" component={Settings} />
+         <Stack.Screen name="ScanMachine" component={ScanMachine} />
+         <Stack.Screen name="TAndC" component={TAndC} />
+         <Stack.Screen name="Support" component={Support} />
 
       </Stack.Navigator>
     </NavigationContainer>

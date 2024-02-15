@@ -22,7 +22,7 @@ const menuList = [
     title: 'Scan Machine',
     icon: ScanQrIcon,
     color: '#78BF7605',
-    screen:''
+    screen:'ScanMachine',
   },
   {
     id: 2,
@@ -43,7 +43,7 @@ const menuList = [
     title: 'Stop Order',
     icon: StopOrderIcon,
     color: '#E54D3E04',
-    screen:''
+    screen:'StopOrder'
   },
   {
     id: 5,
@@ -57,7 +57,7 @@ const menuList = [
     title: 'Settings',
     icon: SettingsIcon,
     color: '#A5A8E305',
-    screen:''
+    screen:'Settings'
   },
 ];
 

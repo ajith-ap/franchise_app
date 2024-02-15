@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import React, {useState} from 'react';
-import {WIN_HEIGHT, WIN_WIDTH} from '../../utils/constant';
+import {CONTENT_HEIGHT, WIN_HEIGHT, WIN_WIDTH} from '../../utils/constant';
 import {Colors} from '../../assets/colors';
 import {
   AddLocationIcon,
@@ -17,10 +17,14 @@ import {
 import AppDropDown from '../../components/AppDropDown';
 import SizedBox from '../../components/SizedBox';
 import AppButton from '../../components/AppButton';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../types';
 
-type Props = {};
+type Props = {
+  navigation: StackNavigationProp<RootStackParamList, 'Splash'>;
+};
 
-const SetLocation = (props: Props) => {
+const SetLocation = ({navigation}: Props) => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
 
   return (
@@ -73,7 +77,7 @@ const SetLocation = (props: Props) => {
         {/* </View> */}
 
         <AppButton
-          onPress={() => {}}
+          onPress={() => {navigation.navigate('Home')}}
           bottomZero
           width={WIN_WIDTH * 0.6}
           buttonText="Set"
@@ -87,7 +91,7 @@ export default SetLocation;
 
 const styles = StyleSheet.create({
   container: {
-    height: WIN_HEIGHT,
+    height: CONTENT_HEIGHT,
     backgroundColor: Colors.white,
     alignItems: 'center',
   },

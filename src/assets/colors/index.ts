@@ -17,6 +17,7 @@ export const Colors = {
     dropDownTextColor: '#2E2E2E',
     statusGreen:'#0DBA67',
     lightGrey:'#F1F1F1',
+    settingsHeaderColor: '#323A33',
 
 
 

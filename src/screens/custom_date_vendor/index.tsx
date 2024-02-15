@@ -20,7 +20,6 @@ const CustomDateVendor = (props: Props) => {
         color="#FFF5D080"
       />
         <DateSelector multySelector />
-
       <View style={styles.content}>
       
       </View>

@@ -14,13 +14,14 @@ type Props = {
   logo?: string;
   icon?: string;
   shade?: boolean;
+  appName?:boolean
 };
 
 export const AppAppBar: React.FC<Props> = ({
   isLogo,
   color,
   onPress,
-
+  appName,
   text,
   logo,
   icon,
@@ -36,7 +37,7 @@ const navigation = useNavigation()
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent:'center',
-      borderBottomWidth: shade ? 0.5 : 0,
+      borderBottomWidth: shade ? 1 : 0,
       borderBottomColor: '#00000020',
     },
     backButton: {
@@ -84,11 +85,14 @@ const navigation = useNavigation()
       <TouchableOpacity onPress={() =>navigation.pop() } style={styles.backButton}>
         <Image source={BackButtonIcon} style={styles.backButtonIcon} />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() =>onPress && onPress() } style={styles.rightButton}>
+     {onPress &&  <TouchableOpacity onPress={() => onPress() } style={styles.rightButton}>
         <Image source={ShareIcon} style={styles.rightButtonIcon} />
-      </TouchableOpacity>
-      <Image style={styles.iconStyle} source={icon} />
+      </TouchableOpacity>}
+     {logo && <Image style={styles.iconStyle} source={icon} />}
         <Text style={styles.textStyle}>{text}</Text>
+        {
+          appName && <Text style={{fontSize:34, color:'#B5E42C', fontFamily:'AlfaSlabOne-Regular'}}>Monkey<Text style={{color:'#E1AA1D'}}>Pot</Text></Text>
+        }
     </View>
   );
 };

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StatusBar, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
 import { Colors } from '../../assets/colors'
 import { StackNavigationProp } from '@react-navigation/stack'
@@ -19,6 +19,7 @@ const Splash = ({ navigation }: Props) => {
   }, [navigation]);
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor={Colors.primaryColor} />
       <AppName />
     </View>
   )

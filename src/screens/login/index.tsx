@@ -21,7 +21,7 @@ import {
   OtpVerifySuccessIcon,
   machineIcon,
 } from '../../assets/images';
-import {WIN_HEIGHT, WIN_WIDTH} from '../../utils/constant';
+import {CONTENT_HEIGHT, WIN_HEIGHT, WIN_WIDTH} from '../../utils/constant';
 import SizedBox from '../../components/SizedBox';
 import AppTextInput from '../../components/AppTextInput';
 import AppButton from '../../components/AppButton';
@@ -53,7 +53,7 @@ const Login = ({navigation}: Props) => {
   /* -------------------------------------------------------------------------- */
 
   const handleMobileNubmer = (e: string) => {
-    console.log(e);
+    // console.log(e);
     setNumber(e);
   };
 
@@ -62,8 +62,9 @@ const Login = ({navigation}: Props) => {
   /* -------------------------------------------------------------------------- */
   /*                              Otp Time Interval                             */
   /* -------------------------------------------------------------------------- */
-  const [seconds, setSeconds] = useState(5);
+  const [seconds, setSeconds] = useState(90);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [isHome, setIsHome] = useState(false);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -84,6 +85,17 @@ const Login = ({navigation}: Props) => {
 
     return () => clearInterval(interval);
   }, [isTimerRunning]);
+
+  useEffect(() => {
+    if(isHome){
+      setTimeout(() => {
+navigation.navigate("SetLocation")
+      },1000)
+    }
+
+  },[isHome])
+
+
 
   const handleResend = () => {
     setIsTimerRunning(true);
@@ -113,6 +125,7 @@ const Login = ({navigation}: Props) => {
     let otp = parseInt(otpValues.join(''), 10);
     if (otp == testOtp) {
       setPageIndex(2);
+      setIsHome(true);
       //success
     } else {
       setOtpWarning('Invalid OTP Code ');
@@ -144,7 +157,7 @@ const Login = ({navigation}: Props) => {
   /* -------------------------------------------------------------------------- */
 
   return (
-    <ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         <AppName isColor />
         <SizedBox height={WIN_HEIGHT * 0.05} />
@@ -262,7 +275,7 @@ export default Login;
 const styles = StyleSheet.create({
   container: {
     // flex: 1,
-    height: WIN_HEIGHT,
+    height: CONTENT_HEIGHT,
     backgroundColor: Colors.white,
     paddingVertical: 20,
     alignItems: 'center',
