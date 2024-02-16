@@ -26,6 +26,8 @@ import SizedBox from '../../components/SizedBox';
 import AppTextInput from '../../components/AppTextInput';
 import AppButton from '../../components/AppButton';
 import OtpInput from '../../components/OtpInput';
+// import { useNavigation } from '@react-navigation/native';
+
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, 'Splash'>;
@@ -34,6 +36,7 @@ const Login = ({navigation}: Props) => {
   // dummy value  for testing
 
   let testOtp = 1234;
+  
 
   /* -------------------------------------------------------------------------- */
   /*                                   States                                   */
@@ -188,7 +191,9 @@ navigation.navigate("SetLocation")
                   />
                 )}
               </TouchableOpacity>
+              <TouchableOpacity onPress={()=>navigation.navigate('ScanSuccess')}>
               <Text style={styles.terms}>Accept terms and conditions</Text>
+              </TouchableOpacity>
             </View>
           </>
         ) : pageIndex == 1 ? (

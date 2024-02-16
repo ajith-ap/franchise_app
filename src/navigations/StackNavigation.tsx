@@ -16,6 +16,7 @@ import Settings from '../screens/settings';
 import ScanMachine from '../screens/scan_machine';
 import Support from '../screens/support';
 import TAndC from '../screens/t&c/Index';
+import ScanSuccess from '../screens/scan_succesful';
 
 const Stack = createStackNavigator();
 
@@ -46,6 +47,7 @@ const StackNavigationContainer = () => {
          <Stack.Screen name="StopOrder" component={StopOrder} />
          <Stack.Screen name="Settings" component={Settings} />
          <Stack.Screen name="ScanMachine" component={ScanMachine} />
+         <Stack.Screen name="ScanSuccess" component={ScanSuccess} />
          <Stack.Screen name="TAndC" component={TAndC} />
          <Stack.Screen name="Support" component={Support} />
 

@@ -39,5 +39,6 @@ export const VendorIcon = require('../images/vendor.png');
 export const ViewBusinessIcon = require('../images/view_business.png');
 export const WarningIcon = require('../images/warning.png');
 export const LocationIcon = require('../images/location_icon.png');
+export const Group =  require('../images/Group.png');
 
 /* -------------------------------------------------------------------------- */
