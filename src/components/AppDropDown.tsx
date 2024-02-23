@@ -1,19 +1,48 @@
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useState} from 'react';
 import {WIN_WIDTH} from '../utils/constant';
 import {Colors} from '../assets/colors';
 import {DownInvisibleIcon} from '../assets/images';
 
-type Props = {};
+type Props = {
+  onPress?: () => void;
+  inputValue?:string;
+  handleInputValue?: (value: string) => void;
+};
 
-const AppDropDown = (props: Props) => {
+const AppDropDown = ({onPress, inputValue, handleInputValue}: Props) => {
+  
+
   return (
-    <TouchableOpacity style={styles.container}>
-      <Text numberOfLines={2} style={styles.text}>Select your machine</Text>
-      <Image
-        source={DownInvisibleIcon}
-        style={{height: 15, resizeMode: 'contain', }}
-      />
+    <TouchableOpacity
+      onPress={onPress}
+      style={styles.container}
+      disabled={onPress ? false : true}>
+      {onPress ? (
+        <>
+          <Text numberOfLines={2} style={styles.text}>
+            Select your machine
+          </Text>
+          <Image
+            source={DownInvisibleIcon}
+            style={{height: 15, resizeMode: 'contain'}}
+          />
+        </>
+      ) : (
+        <TextInput
+          value={inputValue}
+          onChangeText={handleInputValue}
+          placeholder="Select Machine"
+          style={styles.inputContainer}
+        />
+      )}
     </TouchableOpacity>
   );
 };
@@ -29,13 +58,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical:10
-
+    marginVertical: 10,
+    backgroundColor: Colors.white,
+    overflow: 'hidden',
   },
   text: {
     fontSize: 18,
     fontFamily: 'Inter-SemiBold',
     color: Colors.dropDownTextColor,
-    width:WIN_WIDTH * .65
+    width: WIN_WIDTH * 0.65,
+  },
+  inputContainer: {
+    width: WIN_WIDTH * 0.85,
+    height: 60,
+
+    // paddingHorizontal: 25,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
+    backgroundColor: Colors.white,
+    fontSize: 18,
+    fontFamily: 'Inter-SemiBold',
+    color: Colors.dropDownTextColor,
   },
 });

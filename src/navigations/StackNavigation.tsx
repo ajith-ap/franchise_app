@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { NavigationContainer, Theme } from '@react-navigation/native';
-import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
+import { CardStyleInterpolators, createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import Login from '../screens/login';
 import Splash from '../screens/splash';
 import SetLocation from '../screens/set_location';
@@ -17,6 +17,7 @@ import ScanMachine from '../screens/scan_machine';
 import Support from '../screens/support';
 import TAndC from '../screens/t&c/Index';
 import ScanSuccess from '../screens/scan_succesful';
+import SelectMachine from '../screens/select_machine';
 
 const Stack = createStackNavigator();
 
@@ -33,9 +34,9 @@ const StackNavigationContainer = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ ...screenOptions }}>
-         <Stack.Screen name="Splash" component={Splash} />
-         <Stack.Screen name="Login" component={Login} />
+      <Stack.Navigator screenOptions={{ ...screenOptions, cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter }}>
+         {/* <Stack.Screen name="Splash" component={Splash} />
+         <Stack.Screen name="Login" component={Login} /> */}
          <Stack.Screen name="SetLocation" component={SetLocation} />
          <Stack.Screen name="Home" component={Home} />
          <Stack.Screen name="UpdateFood" component={UpdateFood} />
@@ -47,9 +48,10 @@ const StackNavigationContainer = () => {
          <Stack.Screen name="StopOrder" component={StopOrder} />
          <Stack.Screen name="Settings" component={Settings} />
          <Stack.Screen name="ScanMachine" component={ScanMachine} />
-         <Stack.Screen name="ScanSuccess" component={ScanSuccess} />
+         <Stack.Screen name="ScanSuccess" component={ScanSuccess}  />
          <Stack.Screen name="TAndC" component={TAndC} />
          <Stack.Screen name="Support" component={Support} />
+         <Stack.Screen name="SelectMachine" component={SelectMachine} />
 
       </Stack.Navigator>
     </NavigationContainer>

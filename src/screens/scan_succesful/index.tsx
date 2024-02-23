@@ -10,7 +10,7 @@ import { RootStackParamList } from '../../types';
 
 
 type Props = {
-    navigation: StackNavigationProp<RootStackParamList, 'Splash'>;
+    navigation: StackNavigationProp<RootStackParamList, 'ScanSuccess'>;
   };
 
 const ScanSuccess = ({navigation}: Props) => {

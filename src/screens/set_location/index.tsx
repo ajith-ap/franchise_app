@@ -21,11 +21,15 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types';
 
 type Props = {
-  navigation: StackNavigationProp<RootStackParamList, 'Splash'>;
+  navigation: StackNavigationProp<RootStackParamList, 'SetLocation'>;
 };
 
 const SetLocation = ({navigation}: Props) => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
+
+  const handleDropdown = () => {
+    navigation.navigate('SelectMachine');
+  }
 
   return (
     <ScrollView>
@@ -41,7 +45,7 @@ const SetLocation = ({navigation}: Props) => {
           )}
           <Text style={styles.headingText}>Select Machine</Text>
         </View>
-        <AppDropDown />
+        <AppDropDown onPress={handleDropdown} />
         <SizedBox height={WIN_HEIGHT * 0.05} />
 
         <View style={styles.infoContainer}>

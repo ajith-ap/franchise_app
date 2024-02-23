@@ -13,8 +13,13 @@ import {
   ViewBusinessIcon,
 } from '../../assets/images';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../types';
 
-type Props = {};
+type Props = {
+  navigation: StackNavigationProp<RootStackParamList, 'Home'>;
+}
+
 
 const menuList = [
   {
@@ -61,10 +66,13 @@ const menuList = [
   },
 ];
 
-const Home = (props: Props) => {
+const Home = ({navigation}: Props) => {
+  const handleDropdown = () => {
+    navigation.navigate('SelectMachine');
+  }
   return (
     <View style={styles.container}>
-      <AppDropDown />
+      <AppDropDown  onPress={handleDropdown}/>
 
       <View style={styles.homeIconGrid}>
        {

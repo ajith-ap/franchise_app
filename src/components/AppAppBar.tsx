@@ -32,6 +32,7 @@ const navigation = useNavigation()
   const styles = StyleSheet.create({
     container: {
       height: 80,
+      width:WIN_WIDTH,
       backgroundColor: color ?? Colors.white,
       paddingHorizontal: 20,
       flexDirection: 'row',
