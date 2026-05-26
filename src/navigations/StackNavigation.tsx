@@ -17,7 +17,7 @@ import ScanMachine from '../screens/scan_machine';
 import Support from '../screens/support';
 import TAndC from '../screens/t&c/Index';
 import ScanSuccess from '../screens/scan_succesful';
-import SelectMachine from '../screens/select_machine';
+// import SelectMachine from '../screens/select_machine';
 
 const Stack = createStackNavigator();
 
@@ -35,8 +35,8 @@ const StackNavigationContainer = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ ...screenOptions, cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter }}>
-         {/* <Stack.Screen name="Splash" component={Splash} />
-         <Stack.Screen name="Login" component={Login} /> */}
+         {/* <Stack.Screen name="Splash" component={Splash} /> */}
+         <Stack.Screen name="Login" component={Login} />
          <Stack.Screen name="SetLocation" component={SetLocation} />
          <Stack.Screen name="Home" component={Home} />
          <Stack.Screen name="UpdateFood" component={UpdateFood} />
@@ -51,7 +51,7 @@ const StackNavigationContainer = () => {
          <Stack.Screen name="ScanSuccess" component={ScanSuccess}  />
          <Stack.Screen name="TAndC" component={TAndC} />
          <Stack.Screen name="Support" component={Support} />
-         <Stack.Screen name="SelectMachine" component={SelectMachine} />
+         {/* <Stack.Screen name="SelectMachine" component={SelectMachine} /> */}
 
       </Stack.Navigator>
     </NavigationContainer>

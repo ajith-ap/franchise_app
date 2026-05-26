@@ -1,11 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
+import machineReducer from './slices/machineSlice';
+import authReducer from './slices/authSlice';
 
 // Import your slices and reducers here
 
 const store = configureStore({
   reducer: {
-// Combine your reducers here
+    auth: authReducer,
+    machine: machineReducer, 
+
   },
 });
 

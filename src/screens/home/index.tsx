@@ -15,6 +15,8 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, 'Home'>;
@@ -67,12 +69,20 @@ const menuList = [
 ];
 
 const Home = ({navigation}: Props) => {
-  const handleDropdown = () => {
-    navigation.navigate('SelectMachine');
-  }
+  
+  const selectedMachine = useSelector(
+  (state: RootState) => state.machine.selectedMachine
+);
+
+  // const handleDropdown = () => {
+  //   navigation.navigate('SelectMachine');
+  // }
   return (
     <View style={styles.container}>
-      <AppDropDown  onPress={handleDropdown}/>
+      {/* <AppDropDown  onPress={handleDropdown} handleInputValue={selectedMachine?.machineName}/> */}
+      <View style={styles.textcolumn}>
+      <Text style={styles.textcolumntag}>{selectedMachine?.machineName}</Text>        
+      </View>
 
       <View style={styles.homeIconGrid}>
        {
@@ -107,6 +117,7 @@ const HomeCard = (props: HomeCardProps) => {
   const _onTap = () => {
     navigate(data?.screen)
   }
+
 
   return (
     <TouchableOpacity onPress={_onTap} style={styles.homeIconContainer}>
@@ -155,4 +166,21 @@ const styles = StyleSheet.create({
     alignItems:"center",
     justifyContent:"center",
   },
+  textcolumn: {
+   width: WIN_WIDTH * 0.85,
+    height: 60,
+    borderWidth: 1,
+    borderRadius: 60,
+    paddingHorizontal: 25,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
+    backgroundColor: Colors.white,
+    overflow: 'hidden', 
+  },
+  textcolumntag: {
+    fontSize:20,
+    fontWeight:'400',
+    color:Colors.black
+  }
 });

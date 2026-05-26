@@ -6,14 +6,15 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../../types';
-import {Colors} from '../../assets/colors';
-import {AppName} from '../../components/AppName';
+import React, { useEffect, useState } from 'react';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../types';
+import { Colors } from '../../assets/colors';
+import { AppName } from '../../components/AppName';
 import {
   CheckIcon,
   HelpIcon,
@@ -21,22 +22,23 @@ import {
   OtpVerifySuccessIcon,
   machineIcon,
 } from '../../assets/images';
-import {CONTENT_HEIGHT, WIN_HEIGHT, WIN_WIDTH} from '../../utils/constant';
+import { CONTENT_HEIGHT, WIN_HEIGHT, WIN_WIDTH } from '../../utils/constant';
 import SizedBox from '../../components/SizedBox';
-import AppTextInput from '../../components/AppTextInput';
+// import AppTextInput from '../../components/AppTextInput';
 import AppButton from '../../components/AppButton';
 import OtpInput from '../../components/OtpInput';
+import { LoginUser, SendUserOTP, VerifyUserOTP } from '../../api/userService';
 // import { useNavigation } from '@react-navigation/native';
 
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, 'Splash'>;
 };
-const Login = ({navigation}: Props) => {
+const Login = ({ navigation }: Props) => {
   // dummy value  for testing
 
   let testOtp = 1234;
-  
+
 
   /* -------------------------------------------------------------------------- */
   /*                                   States                                   */
@@ -68,6 +70,9 @@ const Login = ({navigation}: Props) => {
   const [seconds, setSeconds] = useState(90);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isHome, setIsHome] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [mobileNo, setMobileNo] = useState<any>('');
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -90,13 +95,13 @@ const Login = ({navigation}: Props) => {
   }, [isTimerRunning]);
 
   useEffect(() => {
-    if(isHome){
+    if (isHome) {
       setTimeout(() => {
-navigation.navigate("SetLocation")
-      },1000)
+        navigation.navigate("SetLocation")
+      }, 1000)
     }
 
-  },[isHome])
+  }, [isHome])
 
 
 
@@ -113,32 +118,55 @@ navigation.navigate("SetLocation")
   const handleOtpChange = (newOtpValues: string[]) => {
     setOtpValues(newOtpValues);
   };
+    const getOtp = async () => {
+    console.log("kkkkkkkk")
+   setPageIndex(2);
+           setIsHome(true);
 
-  const getOtp = () => {
-    if (number?.length < 10) {
-      setNumberWarnings('Please enter at least 10 digits for Phone Number');
-    } else {
-      setNumberWarnings('');
+
+  };
+
+  const getOtps = async () => {  //uncomment after set login
+    const response = await LoginUser(username, password);
+    if (response?.mobileNo) {
+      console.log("response",response)
+      setMobileNo(response?.mobileNo);
+      sendOtp();
+
+
+    }
+
+  };
+
+  const sendOtp = async () => {
+    try {
+      console.log("OTP",mobileNo)
+      const response = await SendUserOTP(mobileNo);
+      console.log("response-2",response)
+
       setPageIndex(1);
-      setIsTimerRunning(true);
+    } catch (error) {
+      console.log("Error111", error);
     }
   };
 
-  const verifyOtp = () => {
-    let otp = parseInt(otpValues.join(''), 10);
-    if (otp == testOtp) {
-      setPageIndex(2);
-      setIsHome(true);
-      //success
-    } else {
-      setOtpWarning('Invalid OTP Code ');
+  const verifyOtp = async () => {
+    let otpCode = parseInt(otpValues.join(''), 10);
+    console.log('ootttpp', otpCode);
+    try {
+      const response = await VerifyUserOTP(mobileNo, otpCode);
+      console.log("vvv", response)
+      if (response?.returnCode == 400) {
+// if (response?.returnCode == 400) {  // change this return code 0
+        setPageIndex(2);
+        setIsHome(true);
+      }
+    } catch (error) {
+      console.log("Error444", error);
     }
+
   };
 
-  /* -------------------------------------------------------------------------- */
-
-  /* -------------------------------------------------------------------------- */
-  /*                                Back handlers                               */
   /* -------------------------------------------------------------------------- */
 
   useEffect(() => {
@@ -157,44 +185,64 @@ navigation.navigate("SetLocation")
 
     return () => backHandler.remove(); // Cleanup the event listener on component unmount
   }, []);
+
+  const LoginuserDetails = async () => {
+    console.log("username==>", username)
+    console.log("password==>", password)
+
+    const res = await LoginUser(username, password);
+    console.log("res==>", res)
+
+  };
+
   /* -------------------------------------------------------------------------- */
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         <AppName isColor />
-        <SizedBox height={WIN_HEIGHT * 0.05} />
+        <SizedBox height={WIN_HEIGHT * 0.03} />
 
         {/* ---------- Content ---------- */}
 
         {pageIndex == 0 ? (
           <>
             <Image source={machineIcon} style={styles.imageStyle} />
-            <SizedBox height={WIN_HEIGHT * 0.025} />
-            <AppTextInput
-              KeyboardType="phone-pad"
-              maxLength={10}
-              value={number}
-              setValue={handleMobileNubmer}
-              warning={numberWarnings}
-              placeHolderText="Enter registered phone number"
-            />
-            <SizedBox height={WIN_HEIGHT * 0.025} />
-            <View style={styles.termsContainer}>
-              <TouchableOpacity
-                onPress={() => setIsChecked(!isChecked)}
-                style={styles.checkBox}>
-                {isChecked && (
-                  <Image
-                    source={CheckIcon}
-                    style={{width: 12, resizeMode: 'contain'}}
-                  />
-                )}
-              </TouchableOpacity>
-              <TouchableOpacity onPress={()=>navigation.navigate('ScanSuccess')}>
-              <Text style={styles.terms}>Accept terms and conditions</Text>
-              </TouchableOpacity>
-            </View>
+            <View style={styles.subcontainer}>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter username"
+                value={username}
+                onChangeText={(e: any) => setUsername(e)}
+                autoCapitalize="none"
+              />
+
+              {/* Password Input */}
+              <TextInput
+                style={styles.input}
+                placeholder="Enter password"
+                value={password}
+                onChangeText={(e: any) => setPassword(e)}
+                secureTextEntry={true}
+              />
+              {/* <SizedBox height={WIN_HEIGHT * 0.025} /> */}
+              <View style={styles.termsContainer}>
+                <TouchableOpacity
+                  onPress={() => setIsChecked(!isChecked)}
+                  style={styles.checkBox}>
+                  {isChecked && (
+                    <Image
+                      source={CheckIcon}
+                      style={{ width: 12, resizeMode: 'contain' }}
+                    />
+                  )}
+                </TouchableOpacity>
+                <TouchableOpacity >
+
+                  {/* <TouchableOpacity onPress={()=>navigation.navigate('ScanSuccess')}> */}
+                  <Text style={styles.terms}>Accept terms and conditions</Text>
+                </TouchableOpacity>
+              </View></View>
           </>
         ) : pageIndex == 1 ? (
           <View style={styles.contentContainer}>
@@ -221,8 +269,8 @@ navigation.navigate("SetLocation")
                   }
                 }}
                 style={[
-                  {fontSize: 18, fontFamily: 'Inter-Bold'},
-                  seconds === 0 && {color: Colors.primaryColor},
+                  { fontSize: 18, fontFamily: 'Inter-Bold' },
+                  seconds === 0 && { color: Colors.primaryColor },
                 ]}>
                 {seconds === 0 ? '  Resend Code' : ' ' + seconds + ' Sec'}
               </Text>
@@ -232,7 +280,7 @@ navigation.navigate("SetLocation")
           <View style={styles.contentContainer}>
             <Image
               source={OtpVerifySuccessIcon}
-              style={{height: 200, resizeMode: 'contain'}}
+              style={{ height: 200, resizeMode: 'contain' }}
             />
             <Text style={styles.verifyText}>Verified</Text>
             <Text style={styles.successText}>Successfully!</Text>
@@ -241,9 +289,9 @@ navigation.navigate("SetLocation")
           <View style={styles.contentContainer}>
             <Image
               source={OopsIcon}
-              style={{height: 110, resizeMode: 'contain'}}
+              style={{ height: 110, resizeMode: 'contain' }}
             />
-            <Text style={[styles.successText,{ fontFamily: 'Poppins-SemiBold'}]}>Oops!</Text>
+            <Text style={[styles.successText, { fontFamily: 'Poppins-SemiBold' }]}>Oops!</Text>
             <Text style={styles.oopsDesc}>
               It looks like this number isn't in MonkeyPot system. Please check
               and confirm the phone number.
@@ -285,13 +333,27 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     alignItems: 'center',
   },
+  subcontainer: {
+    flex: 1,
+    justifyContent: "center",
+    padding: 20,
+    marginTop: -20
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 12,
+    marginBottom: 15,
+    borderRadius: 8,
+    width: WIN_WIDTH * 0.85,
+  },
   imageStyle: {
     resizeMode: 'contain',
     width: WIN_WIDTH * 0.85,
   },
   termsContainer: {
     width: WIN_WIDTH * 0.85,
-
+    // marginTop: -30,
     flexDirection: 'row',
     justifyContent: 'flex-start',
   },
@@ -322,7 +384,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginBottom: 20,
   },
-  descTextStyleBold: {fontFamily: 'Inter-SemiBold', fontSize: 16},
+  descTextStyleBold: { fontFamily: 'Inter-SemiBold', fontSize: 16 },
   contentContainer: {
     // backgroundColor:'grey',
     alignItems: 'center',
@@ -340,12 +402,12 @@ const styles = StyleSheet.create({
     color: Colors.text20,
     marginTop: 15,
   },
-  oopsDesc:{
+  oopsDesc: {
     width: WIN_WIDTH * .85,
-    fontSize:18,
-    fontFamily:"Poppins-Medium",
-    color:Colors.text40,
-    textAlign:"center",
-    marginTop:15,
+    fontSize: 18,
+    fontFamily: "Poppins-Medium",
+    color: Colors.text40,
+    textAlign: "center",
+    marginTop: 15,
   }
 });
