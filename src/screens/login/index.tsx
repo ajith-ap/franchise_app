@@ -118,7 +118,7 @@ const Login = ({ navigation }: Props) => {
   const handleOtpChange = (newOtpValues: string[]) => {
     setOtpValues(newOtpValues);
   };
-    const getOtp = async () => {
+    const getOtps = async () => {
     console.log("kkkkkkkk")
    setPageIndex(2);
            setIsHome(true);
@@ -126,7 +126,7 @@ const Login = ({ navigation }: Props) => {
 
   };
 
-  const getOtps = async () => {  //uncomment after set login
+  const getOtp = async () => {  //uncomment after set login
     const response = await LoginUser(username, password);
     if (response?.mobileNo) {
       console.log("response",response)
@@ -156,8 +156,8 @@ const Login = ({ navigation }: Props) => {
     try {
       const response = await VerifyUserOTP(mobileNo, otpCode);
       console.log("vvv", response)
-      if (response?.returnCode == 400) {
-// if (response?.returnCode == 400) {  // change this return code 0
+      // if (response?.returnCode == 400) {
+if (response?.returnCode == 404) {  // change this return code 0
         setPageIndex(2);
         setIsHome(true);
       }

@@ -24,13 +24,13 @@ type Props = {
 
 
 const menuList = [
-  {
-    id: 1,
-    title: 'Scan Machine',
-    icon: ScanQrIcon,
-    color: '#78BF7605',
-    screen:'ScanMachine',
-  },
+  // {
+  //   id: 1,
+  //   title: 'Scan Machine',
+  //   icon: ScanQrIcon,
+  //   color: '#78BF7605',
+  //   screen:'ScanMachine',
+  // },
   {
     id: 2,
     title: 'Update Food',

@@ -25,12 +25,15 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { useAppDispatch } from '../../store';
 import { setSelectedMachine } from '../../store/slices/machineSlice';
 import Toast from 'react-native-toast-message';
+import Geolocation from 'react-native-geolocation-service';
+import LottieView from 'lottie-react-native';
+
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, 'SetLocation'>;
 };
 
- 
+
 
 
 
@@ -41,6 +44,7 @@ const SetLocation = ({ navigation }: Props) => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const [machines, setMachines] = useState<any[]>([]);
   const [value, setValue] = useState(null);
+  const [selectMachine, setSelectMachine] = useState<any>(null);
   // const [selectedMachine, setSelectedMachine] = useState<any | null>(null);
   const dispatch = useAppDispatch();
 
@@ -58,25 +62,126 @@ const SetLocation = ({ navigation }: Props) => {
     }
   };
 
-const handleChange = (item: any) => {
-  setValue(item?.machineID);
-  dispatch(setSelectedMachine(item));
-  
+  const handleChange = (item: any) => {
+    setValue(item?.machineID);
+    dispatch(setSelectedMachine(item));
+    setSelectMachine(item);
+    console.log("selectMachine",selectMachine)
+
+  };
+
+  const handleSelect = () => {
+    if (!value) {
+      Toast.show({
+        type: "error",
+        text1: "Alert",
+        text2: "Select Your Machine..!",
+      });
+
+    }
+    else {
+      navigation.navigate('Home')
+    }
+  }
+
+const formatDate = (dateString: string) => {
+  if (!dateString) return '';
+
+  const date = new Date(dateString);
+
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+
+  return `${day}-${month}-${year}`;
 };
 
-const handleSelect = () => {
-  if(!value){
-  Toast.show({
-      type: "error",
-      text1: "Alert",
-      text2: "Select Your Machine..!",
+  const handleSelectLocation = () => {
+    return new Promise((resolve, reject) => {
+      Geolocation.getCurrentPosition(
+        position => {
+          resolve({
+            gpsLatitude: position.coords.latitude,
+            gpsLongitude: position.coords.longitude,
+          });
+        },
+        error => {
+          reject(error);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 15000,
+          maximumAge: 10000,
+        }
+      );
     });
-  
-  }
-  else {
-    navigation.navigate('Home')
-  }
-}
+  };
+
+  const requestLocationPermission = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: 'Location Permission',
+            message: 'App needs access to your location',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
+        );
+
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      } catch (err) {
+        console.warn(err);
+        return false;
+      }
+    }
+
+    return true;
+  };
+
+  const saveMachineLocation = async () => {
+    try {
+
+      // Request Permission
+      const hasPermission = await requestLocationPermission();
+
+      if (!hasPermission) {
+        Toast.show({
+          type: 'error',
+          text1: 'Permission Denied',
+          text2: 'Location permission is required',
+        });
+        return;
+      }
+
+      // Get Location
+      const location: any = await handleSelectLocation();
+
+      const payload = {
+        gpsLatitude: location.gpsLatitude,
+        gpsLongitude: location.gpsLongitude,
+      };
+
+      console.log('Saving Data:', payload);
+
+      Toast.show({
+        type: 'success',
+        text1: 'Location Fetched',
+        text2: 'GPS location fetched successfully',
+      });
+
+    } catch (error) {
+      console.log('Location Error:', error);
+
+      Toast.show({
+        type: 'error',
+        text1: 'Location Error',
+        text2: 'Unable to fetch location',
+      });
+    }
+  };
 
 
   return (
@@ -108,44 +213,79 @@ const handleSelect = () => {
         <SizedBox height={WIN_HEIGHT * 0.05} />
 
         <View style={styles.infoContainer}>
-          <Text style={styles.infoText}>Start Date : 01 - 05 -2022</Text>
-          <Text style={styles.infoText}>Status Date : 30 - 04 -2023</Text>
+          <Text style={styles.infoText}>Start Date    : {selectMachine?.machineIssueDate ? formatDate(selectMachine?.machineIssueDate) : 'DD/MM/YYYY'}</Text>
+          <Text style={styles.infoText}>Status Date : { selectMachine?.machineStatusUpdateDate ? formatDate(selectMachine?.machineStatusUpdateDate) : 'DD/MM/YYYY'}</Text>
           <Text style={styles.infoText}>
-            Status : <Text style={{ color: Colors.statusGreen }}>Active</Text>
+            Status           : <Text style={{ color: Colors.statusGreen }}>
+              {
+                selectMachine?.machineStatus == 'A' ? 'Active' : 'Inactive'
+              }
+            </Text>
           </Text>
         </View>
 
         {/* <View > */}
-        <Text style={styles.selectLocationText}>Select Location</Text>
+        {
+          selectMachine?.gpsLatitude == '' || selectMachine?.gpsLatitude == null
+          ?
+          <>
+          <Text style={styles.selectLocationText}>Select Location</Text>
         <Text style={styles.selectLocationDescText}>
           Please grant permission for your GPS to access your precise location.
+        </Text></>
+        :
+        <><Text style={styles.selectLocationText}>Location</Text>
+        <Text style={styles.selectLocationDescText}>
+         Your submitted location.
         </Text>
+        </>
+        }
+        
 
         <View style={styles.mapView}>
-          <Image
-            source={AddLocationIcon}
-            style={{ height: 50, resizeMode: 'contain' }}
+          <LottieView
+            source={require('../../assets/gif/location.json')}
+            autoPlay
+            loop
+            style={{
+              width: 180,
+              height: 180,
+              alignSelf: 'center',
+            }}
           />
         </View>
 
 
-        <View style={{ width: WIN_WIDTH * 0.9, alignItems: "center", flexDirection: 'row' }}>
+        <View style={{ width: WIN_WIDTH * 0.9,display:'flex', alignItems: "flex-start", flexDirection: 'row' , justifyContent:'flex-start'}}>
           <Image
             style={{ width: 20, resizeMode: 'contain' }}
             source={LocationIcon}
           />
           <Text style={[styles.selectLocationSelectText]}>
-            Thrissur Railway Station , T1 PF 14
+            {selectMachine?.addressLocation}, {selectMachine?.addressPlace}, {selectMachine?.addressDistrict}. {selectMachine?.addressState}
           </Text>
-        </View> 
+        </View>
         {/* </View> */}
 
+         {
+          selectMachine?.gpsLatitude == '' || selectMachine?.gpsLatitude == null
+          ?
+
         <AppButton
+          onPress={() => saveMachineLocation()}
+          bottomZero
+          width={WIN_WIDTH * 0.6}
+          buttonText="Add Location"
+        />
+        :
+
+         <AppButton
           onPress={() => handleSelect()}
           bottomZero
           width={WIN_WIDTH * 0.6}
-          buttonText="Set"
-        />
+          buttonText="Next"
+        /> 
+         }
       </View>
     </ScrollView>
   );
@@ -166,15 +306,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 65,
   },
-   selectedTextStyle: {
-      fontSize: 16,
-       color:'#000'
-    },
-     inputSearchStyle: {
-      height: 40,
-      fontSize: 16,
-      color:'#000'
-    },
+  selectedTextStyle: {
+    fontSize: 16,
+    color: '#000'
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+    color: '#000'
+  },
   dropdown: {
     width: WIN_WIDTH * 0.9,
     height: 50,
@@ -223,7 +363,7 @@ const styles = StyleSheet.create({
   mapView: {
     width: WIN_WIDTH * 0.9,
     height: 200,
-    backgroundColor: 'lightgrey',
+    backgroundColor: '#FAF9F6',
     borderRadius: 10,
     marginTop: 20,
     alignItems: 'center',
@@ -234,7 +374,8 @@ const styles = StyleSheet.create({
     width: WIN_WIDTH * 0.82,
     fontSize: 15,
     color: Colors.text40,
-    marginLeft: 5
+    marginLeft: 5,
+    marginTop:10
   },
   // dropdown: {
   //     height: 50,
