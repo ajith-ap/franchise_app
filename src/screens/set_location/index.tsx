@@ -20,7 +20,7 @@ import SizedBox from '../../components/SizedBox';
 import AppButton from '../../components/AppButton';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types';
-import { getMachineMapping } from '../../api/userService';
+import { getMachineMapping, UpdateLocation } from '../../api/userService';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useAppDispatch } from '../../store';
 import { setSelectedMachine } from '../../store/slices/machineSlice';
@@ -34,17 +34,12 @@ type Props = {
 };
 
 
-
-
-
-
-
-
 const SetLocation = ({ navigation }: Props) => {
   const [isDropdownVisible, setDropdownVisible] = useState(false);
   const [machines, setMachines] = useState<any[]>([]);
   const [value, setValue] = useState(null);
   const [selectMachine, setSelectMachine] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
   // const [selectedMachine, setSelectedMachine] = useState<any | null>(null);
   const dispatch = useAppDispatch();
 
@@ -55,7 +50,7 @@ const SetLocation = ({ navigation }: Props) => {
 
   const fetchMachines = async () => {
     try {
-      const res = await getMachineMapping(5);
+      const res = await getMachineMapping(2);
       setMachines(res.Data);
     } catch (error) {
       console.log("Error:", error);
@@ -143,7 +138,7 @@ const formatDate = (dateString: string) => {
 
   const saveMachineLocation = async () => {
     try {
-
+setLoading(true);
       // Request Permission
       const hasPermission = await requestLocationPermission();
 
@@ -166,11 +161,19 @@ const formatDate = (dateString: string) => {
 
       console.log('Saving Data:', payload);
 
+       const res = await UpdateLocation(
+        2,
+        10001,
+        payload
+      );
+      if(res?.returnCode == 0){
+        setLoading(false);
       Toast.show({
         type: 'success',
         text1: 'Location Fetched',
-        text2: 'GPS location fetched successfully',
+        text2: 'Machine location updated successfully',
       });
+      }
 
     } catch (error) {
       console.log('Location Error:', error);
@@ -265,7 +268,7 @@ const formatDate = (dateString: string) => {
             {selectMachine?.addressLocation}, {selectMachine?.addressPlace}, {selectMachine?.addressDistrict}. {selectMachine?.addressState}
           </Text>
         </View>
-        {/* </View> */}
+        {/* </View>  */}
 
          {
           selectMachine?.gpsLatitude == '' || selectMachine?.gpsLatitude == null
@@ -275,7 +278,7 @@ const formatDate = (dateString: string) => {
           onPress={() => saveMachineLocation()}
           bottomZero
           width={WIN_WIDTH * 0.6}
-          buttonText="Add Location"
+          buttonText={loading ? 'Please wait...' : 'Add Location'}
         />
         :
 
@@ -377,13 +380,6 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginTop:10
   },
-  // dropdown: {
-  //     height: 50,
-  //     borderColor: 'gray',
-  //     borderWidth: 0.5,
-  //     borderRadius: 8,
-  //     paddingHorizontal: 8,
-  //   },
   icon: {
     marginRight: 5,
   },

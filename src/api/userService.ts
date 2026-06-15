@@ -155,6 +155,32 @@ export const getFoodResturantMapping = async (
   return response.data;
 };
 
+//Update Mmachine Location
+
+export interface UpdateLocationRequest {
+  gpsLatitude: number;
+  gpsLongitude: number;
+}
+
+export const UpdateLocation = async (
+  franchiseeID: number,
+  machineID: number,
+  data: UpdateLocationRequest
+): Promise<ApiResponse<any>> => {
+  const response = await apiClient.put<ApiResponse<any>>(
+    ENDPOINTS.UpdateMachineLocation,
+    data,
+    {
+      params: {
+        franchiseeID,
+        machineID,
+      },
+    }
+  );
+
+  return response.data;
+};
+
 // Load Food in Trey
 export const LoadFood = async (
   machineID: number,

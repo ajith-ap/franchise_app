@@ -21,10 +21,6 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import Toast from "react-native-toast-message";
 
-
-/* -------------------------------------------------------------------------- */
-/*                               Dummy Tray List                              */
-/* -------------------------------------------------------------------------- */
 const trayList = [
   {
     id: 1,
@@ -44,24 +40,12 @@ const trayList = [
   }
 ];
 
-// const dummytrayList = [
-//   {
-//     id: 5,
-//     title: 'Tray 5',
-//   },
-//   {
-//     id: 6,
-//     title: 'Tray 6',
-//   }
-// ];
-
-/* -------------------------------------------------------------------------- */
-
 type Props = {};
 
 const UpdateFood = (props: Props) => {
   const [showUpdateFoodModal, setUpdateFoodModal] = useState(false);
   const [selectFoodModal, setSelectFoodModal] = useState(false);
+  const [verify, setVerify] = useState(false);
   const [selectsession, setSelectSession] = useState<any[]>([]);
   const [resturant, setResturant] = useState<any[]>([]);
   const [food, setFood] = useState<any[]>([]);
@@ -242,10 +226,24 @@ console.log("e-resturant",e);
   }
 
 
-
-
   /* -------------------------------------------------------------------------- */
   return (
+    <>
+    {
+      verify == false ?
+    
+      <View style={styles.container}>
+      <StatusBar
+        backgroundColor={
+          showUpdateFoodModal ? 'rgba(0, 0, 0, 0.5)' : Colors.white
+        }
+      />
+      <Text> Verify Your Machine</Text>
+                    <AppButton onPress={() => LoadFoodByTray()} width={WIN_WIDTH * .36} buttonText="Add" />
+
+      </View>
+      :
+
     <View style={styles.container}>
       <StatusBar
         backgroundColor={
@@ -348,6 +346,8 @@ console.log("e-resturant",e);
         </View>
       </Modal>
     </View>
+}
+    </>
   );
 };
 

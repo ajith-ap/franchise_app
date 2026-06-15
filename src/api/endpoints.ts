@@ -5,6 +5,7 @@ export const ENDPOINTS = {
   USERS: "/users",
   PROFILE: "/profile",
   MachineMapping: "/MachineFranchiseeMapping",
+  UpdateMachineLocation: "MachineFranchiseeMapping/UpdateMachineLocationInfo",
   // GETResturantByFranchise : "/FranchiseeRestaurantMapping",
     GETResturantByFranchise : "/FranchMachineRestaurantMapping",
   GETFoodResturantByFranchise : "/FoodRestaurantMapping",
