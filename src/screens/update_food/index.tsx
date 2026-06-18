@@ -20,6 +20,7 @@ import { getFoodResturantMapping, getResturantMapping, getSessionMapping, clearT
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import Toast from "react-native-toast-message";
+import { Camera } from 'react-native-camera-kit';
 
 const trayList = [
   {
@@ -45,6 +46,8 @@ type Props = {};
 const UpdateFood = (props: Props) => {
   const [showUpdateFoodModal, setUpdateFoodModal] = useState(false);
   const [selectFoodModal, setSelectFoodModal] = useState(false);
+    const [checktest, setChecktest] = useState(false);
+  const [showScanner, setShowScanner] = useState(false);
   const [verify, setVerify] = useState(false);
   const [selectsession, setSelectSession] = useState<any[]>([]);
   const [resturant, setResturant] = useState<any[]>([]);
@@ -225,6 +228,31 @@ console.log("e-resturant",e);
     )
   }
 
+   const onScan = (event: any) => {
+    console.log('QR Value12345:', event.nativeEvent.codeStringValue);
+ 
+  const scannedCode = event.nativeEvent.codeStringValue;
+
+  console.log("Stored Machine Code:", selectedMachine?.machineCode);
+  console.log("Scanned QR Code:", scannedCode);
+
+  if (selectedMachine?.machineCode === scannedCode) {
+    console.log("✅ Both are Match");
+
+    Alert.alert("Success", "Machine Verified");
+
+    setVerify(true);
+    setShowScanner(false);
+  } else {
+    console.log("❌ Not Match");
+    Alert.alert(
+      "Verification Failed",
+      "Scanned QR does not belong to this machine"
+    );
+    setShowScanner(false);
+  }
+};
+
 
   /* -------------------------------------------------------------------------- */
   return (
@@ -232,16 +260,44 @@ console.log("e-resturant",e);
     {
       verify == false ?
     
-      <View style={styles.container}>
-      <StatusBar
-        backgroundColor={
-          showUpdateFoodModal ? 'rgba(0, 0, 0, 0.5)' : Colors.white
-        }
-      />
-      <Text> Verify Your Machine</Text>
-                    <AppButton onPress={() => LoadFoodByTray()} width={WIN_WIDTH * .36} buttonText="Add" />
+      <View>
+    <Text style={{fontSize: 18}}>
+      Verify Your Machine
+    </Text>
 
-      </View>
+    {!showScanner ? (
+      <AppButton
+        onPress={() => setShowScanner(true)}
+        width={WIN_WIDTH * 0.6}
+        buttonText="Scan Your Machine"
+      />
+    ) : (
+        <View style={{ flex: 1 }}>
+  
+  <Camera
+        style={{
+      width: '100%',
+      height: 500,
+    }}
+        scanBarcode={true}
+        onReadCode={onScan}
+         showFrame={true} 
+  laserColor='red' 
+  frameColor='white'
+        
+      />
+  <View>
+    {
+      checktest ?
+      <Text>reader correct</Text>
+      :
+            <Text>reader not corected</Text>
+
+    }
+  </View>
+</View>
+    )}
+  </View>
       :
 
     <View style={styles.container}>
@@ -393,6 +449,9 @@ const DisableFoodCard = (props: FoodCardProps) => {
     </View>
   );
 };
+
+
+
 
 /* -------------------------------------------------------------------------- */
 
